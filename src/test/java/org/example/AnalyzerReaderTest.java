@@ -14,6 +14,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AnalyzerReaderTest {
     public final AnalyzerReader analyzerReader = new AnalyzerReader();
 
+    @Test
+    public void givenTextWithSymbols_thenReturnOnlyLettersAndNumbers() {
+        String text = "Hello, world! 123-3240.534. Brunão, teste de acentuação, ç, á";
+        String expectedText = "Hello world 1233240534 Brunão teste de acentuação ç á";
+
+        String response = analyzerReader.filterLettersAndNumbers(text);
+
+        assertEquals(expectedText, response);
+    }
+
     @ParameterizedTest
     @CsvSource(value = "'validation-files/happy-birthday-input.txt', 'validation-files/happy-birthday-output.txt'")
     public void readFile(String filePath, String expectedOutputPath) throws Exception {
