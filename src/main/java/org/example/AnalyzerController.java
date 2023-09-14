@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example;
 
 public class AnalyzerController {
     //TODO validate file
