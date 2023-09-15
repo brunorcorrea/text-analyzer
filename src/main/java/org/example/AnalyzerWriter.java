@@ -1,13 +1,25 @@
 package org.example;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
 public class AnalyzerWriter {
-    public void writeToFile(String filePath, String text) {
-        //TODO - Implement this method
+    private static Integer FILES_COUNT = 1;
+
+    public void writeToFile(String text) {
+        File file = new File(String.format("output-%d.csv", FILES_COUNT));
+        try {
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(text);
+            fileWriter.close();
+            FILES_COUNT++;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String formatTextToCSV(TreeMap<String, ArrayList<String>> text) {

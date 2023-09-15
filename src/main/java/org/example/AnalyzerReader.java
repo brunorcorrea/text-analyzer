@@ -16,7 +16,9 @@ public class AnalyzerReader {
             e.printStackTrace();
         }
 
-        throw new Exception("File not found"); //TODO - Create a custom exception named 'FileNotFound'
+//        throw new Exception("File not found"); //TODO - Create a custom exception named 'FileNotFound'
+        System.out.println("File not found"); //TODO - Create a custom exception named 'FileNotFound'
+        return "";
     }
 
     public String readFromInputStream(InputStream inputStream) throws IOException {
@@ -48,11 +50,11 @@ public class AnalyzerReader {
         ArrayList<String> wordsList = new ArrayList<>(Arrays.asList(words));
         int contador = 0;
         for (String w : words) {
-            if (contador == words.length-1) {
+            if (contador == words.length - 1) {
                 break;
             }
 
-            if (w.length() > 0 && contador != wordsList.toArray().length-1) {
+            if (w.length() > 0 && contador != wordsList.toArray().length - 1) {
                 if (textTreeMap.get(w) == null) {
                     var adjacencyList = new ArrayList<String>();
                     adjacencyList.add(wordsList.get(contador + 1));
@@ -66,7 +68,7 @@ public class AnalyzerReader {
                     textTreeMap.put(w, adjacencyList);
                 }
             }
-            contador ++;
+            contador++;
         }
     }
 
