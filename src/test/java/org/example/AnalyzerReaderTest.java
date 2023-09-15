@@ -13,6 +13,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AnalyzerReaderTest {
     public final AnalyzerReader analyzerReader = new AnalyzerReader();
+    public final AnalyzerWriter analyzerWriter = new AnalyzerWriter();
+
+    @ParameterizedTest
+    @CsvSource(value = {"'validation-files/happy-birthday-input.txt', 'validation-files/happy-birthday-output.txt'"
+            , "'validation-files/luar-sertao-input.txt', 'validation-files/luar-sertao-output.txt'"
+    })
+    public void givenValidText_thenReturnExpected(String filePath, String expectedOutputPath) throws Exception {
+        String expectedOutput = readFile(expectedOutputPath);
+
+        String text = analyzerReader.readFile(filePath);
+        analyzerReader.processText(analyzerReader.formatText(text));
+        String response = analyzerWriter.formatTextToCSV(analyzerReader.getTextTreeMap());
+
+        assertEquals(expectedOutput, response);
+    }
 
     @Test
     public void givenTextWithSymbols_thenReturnOnlyLettersAndNumbers() {
@@ -24,18 +39,7 @@ public class AnalyzerReaderTest {
         assertEquals(expectedText, response);
     }
 
-    @ParameterizedTest
-    @CsvSource(value = "'validation-files/happy-birthday-input.txt', 'validation-files/happy-birthday-output.txt'")
-    public void readFile(String filePath, String expectedOutputPath) throws Exception {
-        String expectedOutput = readFile(expectedOutputPath);
-
-        String response = analyzerReader.readFile(filePath);
-
-        assertEquals(expectedOutput, response);
-    }
-
-    private String readFromInputStream(InputStream inputStream)
-            throws IOException {
+    private String readFromInputStream(InputStream inputStream) throws IOException {
         StringBuilder resultStringBuilder = new StringBuilder();
         try (BufferedReader br
                      = new BufferedReader(new InputStreamReader(inputStream))) {
