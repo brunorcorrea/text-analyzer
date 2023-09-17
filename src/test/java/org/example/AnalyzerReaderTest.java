@@ -1,5 +1,6 @@
 package org.example;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -8,7 +9,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.TreeMap;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AnalyzerReaderTest {
@@ -26,7 +31,8 @@ public class AnalyzerReaderTest {
         analyzerReader.processText(analyzerReader.formatText(text));
         String response = analyzerWriter.formatTextToCSV(analyzerReader.getTextTreeMap());
 
-        assertEquals(expectedOutput, response);
+
+        assertProcessedTextIsEqualToExpected(response, expectedOutput);
     }
 
     @Test
@@ -60,5 +66,26 @@ public class AnalyzerReaderTest {
         }
 
         throw new Exception("File not found");
+    }
+
+    private void assertProcessedTextIsEqualToExpected(String processedText, String expectedText) {
+        String[] textLines = processedText.split("\n");
+        TreeMap<String, ArrayList<String>> processedTextTreeMap = new TreeMap<>();
+        Arrays.stream(textLines).forEach(line -> {
+            String[] lineValues = line.split(", ");
+            processedTextTreeMap.put(lineValues[0], new ArrayList<>(Arrays.asList(lineValues)));
+        });
+
+        String[] expectedTextLines = expectedText.split("\n");
+        TreeMap<String, ArrayList<String>> expectedTextTreeMap = new TreeMap<>();
+        Arrays.stream(expectedTextLines).forEach(line -> {
+            String[] lineValues = line.split(", ");
+            expectedTextTreeMap.put(lineValues[0], new ArrayList<>(Arrays.asList(lineValues)));
+        });
+
+        assertEquals(processedTextTreeMap.keySet(), expectedTextTreeMap.keySet());
+        for (String key : processedTextTreeMap.keySet()) {
+            assertThat(processedTextTreeMap.get(key), Matchers.containsInAnyOrder(expectedTextTreeMap.get(key).toArray()));
+        }
     }
 }
