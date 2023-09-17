@@ -9,9 +9,9 @@ public class AnalyzerReader {
     private final TreeMap<String, ArrayList<String>> textTreeMap = new TreeMap<>();
 
     public String readFile(String filePath) throws Exception {
-        ClassLoader classLoader = getClass().getClassLoader();
-        try (var inputStream = classLoader.getResourceAsStream(filePath)) {
-            return readFromInputStream(inputStream);
+
+        try(FileReader fileReader = new FileReader(filePath)) {
+            return getDataFromFile(fileReader);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -20,6 +20,18 @@ public class AnalyzerReader {
         System.out.println("File not found"); //TODO - Create a custom exception named 'FileNotFound'
         return "";
     }
+
+    public String getDataFromFile(FileReader fileReader) throws IOException {
+        StringBuilder resultStringBuilder = new StringBuilder();
+        try (var br = new BufferedReader(fileReader)) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                resultStringBuilder.append(line).append(" ");
+            }
+        }
+        return resultStringBuilder.toString();
+    }
+
 
     public String readFromInputStream(InputStream inputStream) throws IOException {
         StringBuilder resultStringBuilder = new StringBuilder();
