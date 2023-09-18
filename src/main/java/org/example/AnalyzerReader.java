@@ -25,18 +25,6 @@ public class AnalyzerReader {
         return resultStringBuilder.toString();
     }
 
-
-    public String readFromInputStream(InputStream inputStream) throws IOException {
-        StringBuilder resultStringBuilder = new StringBuilder();
-        try (var br = new BufferedReader(new InputStreamReader(inputStream))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                resultStringBuilder.append(line).append(" ");
-            }
-        }
-        return resultStringBuilder.toString();
-    }
-
     public String filterLettersAndNumbers(String text) {
         return text.replaceAll("[^\\pL0-9 ]", "");
     }

@@ -21,8 +21,8 @@ public class AnalyzerReaderTest {
     public final AnalyzerWriter analyzerWriter = new AnalyzerWriter();
 
     @ParameterizedTest
-    @CsvSource(value = {"'validation-files/happy-birthday-input.txt', 'validation-files/happy-birthday-output.txt'"
-            , "'validation-files/luar-sertao-input.txt', 'validation-files/luar-sertao-output.txt'"
+    @CsvSource(value = {"'C:\\Users\\corre\\IdeaProjects\\text-analyzer\\src\\test\\resources\\validation-files\\happy-birthday-input.txt', 'C:\\Users\\corre\\IdeaProjects\\text-analyzer\\src\\test\\resources\\validation-files\\happy-birthday-output.csv'"
+            , "'C:\\Users\\corre\\IdeaProjects\\text-analyzer\\src\\test\\resources\\validation-files\\luar-sertao-input.txt', 'C:\\Users\\corre\\IdeaProjects\\text-analyzer\\src\\test\\resources\\validation-files\\luar-sertao-output.csv'"
     })
     public void givenValidText_thenReturnExpected(String filePath, String expectedOutputPath) throws Exception {
         String expectedOutput = readFile(expectedOutputPath);
