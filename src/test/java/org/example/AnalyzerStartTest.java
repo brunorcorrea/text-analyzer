@@ -30,4 +30,12 @@ class AnalyzerStartTest {
         assertEquals("No file was provided!", outputStreamCaptor.toString()
                 .trim());
     }
+
+    @Test
+    void givenFileDoesNotExist_whenStart_thenThrowFileNotFoundException() {
+        String expectedMessage = "fileDoesNotExist.txt (O sistema não pode encontrar o arquivo especificado)";
+        AnalyzerStart.main(new String[]{"fileDoesNotExist.txt"});
+        assertEquals(expectedMessage, outputStreamCaptor.toString()
+                .trim());
+    }
 }

@@ -9,16 +9,9 @@ public class AnalyzerReader {
     private final TreeMap<String, ArrayList<String>> textTreeMap = new TreeMap<>();
 
     public String readFile(String filePath) throws Exception {
-
         try(FileReader fileReader = new FileReader(filePath)) {
             return getDataFromFile(fileReader);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
-//        throw new Exception("File not found"); //TODO - Create a custom exception named 'FileNotFound'
-        System.out.println("File not found"); //TODO - Create a custom exception named 'FileNotFound'
-        return "";
     }
 
     public String getDataFromFile(FileReader fileReader) throws IOException {
