@@ -25,18 +25,6 @@ public class AnalyzerReader {
         return resultStringBuilder.toString();
     }
 
-
-    public String readFromInputStream(InputStream inputStream) throws IOException {
-        StringBuilder resultStringBuilder = new StringBuilder();
-        try (var br = new BufferedReader(new InputStreamReader(inputStream))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                resultStringBuilder.append(line).append(" ");
-            }
-        }
-        return resultStringBuilder.toString();
-    }
-
     public String filterLettersAndNumbers(String text) {
         return text.replaceAll("[^\\pL0-9 ]", "");
     }
@@ -51,15 +39,12 @@ public class AnalyzerReader {
     }
 
     public void processText(String text) {
-        String[] words = text.split(" ");
-        ArrayList<String> wordsList = new ArrayList<>(Arrays.asList(words));
-        int contador = 0;
-        for (String w : words) {
-            if (contador == words.length - 1) {
-                break;
-            }
+        ArrayList<String> wordsList = new ArrayList<>(Arrays.asList(text.split(" ")));
 
-            if (w.length() > 0 && contador != wordsList.toArray().length - 1) {
+        int contador = 0;
+
+        for (String w : wordsList) {
+            if (contador != wordsList.size() - 1) {
                 if (textTreeMap.get(w) == null) {
                     var adjacencyList = new ArrayList<String>();
                     adjacencyList.add(wordsList.get(contador + 1));
@@ -67,9 +52,11 @@ public class AnalyzerReader {
                 } else {
                     var adjacencyList = textTreeMap.get(w);
                     var nextWord = wordsList.get(contador + 1);
+
                     if (!adjacencyList.contains(nextWord)) {
                         adjacencyList.add(nextWord);
                     }
+
                     textTreeMap.put(w, adjacencyList);
                 }
             }
