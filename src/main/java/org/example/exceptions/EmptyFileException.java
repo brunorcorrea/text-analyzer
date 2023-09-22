@@ -2,11 +2,11 @@ package org.example.exceptions;
 
 import java.io.Serial;
 
-public class InvalidFileProvidedException extends Exception {
+public class EmptyFileException extends Exception {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public InvalidFileProvidedException(String message) {
+    public EmptyFileException(String message) {
         super(message);
     }
 }
