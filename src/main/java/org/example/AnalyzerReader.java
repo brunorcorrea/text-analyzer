@@ -1,15 +1,17 @@
 package org.example;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.TreeMap;
 
 public class AnalyzerReader {
     private final TreeMap<String, ArrayList<String>> textTreeMap = new TreeMap<>();
 
     public String readFile(File file) throws Exception {
-        try(FileReader fileReader = new FileReader(file)) {
+        try (FileReader fileReader = new FileReader(file)) {
             return getDataFromFile(fileReader);
         }
     }
@@ -39,28 +41,21 @@ public class AnalyzerReader {
     }
 
     public void processText(String text) {
-        ArrayList<String> wordsList = new ArrayList<>(Arrays.asList(text.split(" ")));
+        String[] wordsList = text.split(" ");
+        int lastWordIndex = wordsList.length - 1;
 
-        int contador = 0;
+        for (int wordIndex = 0; wordIndex < lastWordIndex; wordIndex++) {
+            String word = wordsList[wordIndex];
+            var adjacencyList = textTreeMap.get(word);
 
-        for (String w : wordsList) {
-            if (contador != wordsList.size() - 1) {
-                if (textTreeMap.get(w) == null) {
-                    var adjacencyList = new ArrayList<String>();
-                    adjacencyList.add(wordsList.get(contador + 1));
-                    textTreeMap.put(w, adjacencyList);
-                } else {
-                    var adjacencyList = textTreeMap.get(w);
-                    var nextWord = wordsList.get(contador + 1);
+            if (adjacencyList == null) // if word is not in the map, this means it is the first time it appears
+                adjacencyList = new ArrayList<>();
 
-                    if (!adjacencyList.contains(nextWord)) {
-                        adjacencyList.add(nextWord);
-                    }
+            var nextWord = wordsList[wordIndex + 1];
+            if (!adjacencyList.contains(nextWord)) // if the next word is not in the adjacency list, add it
+                adjacencyList.add(nextWord);
 
-                    textTreeMap.put(w, adjacencyList);
-                }
-            }
-            contador++;
+            textTreeMap.put(word, adjacencyList);
         }
     }
 
