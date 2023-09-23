@@ -8,8 +8,8 @@ import java.util.TreeMap;
 public class AnalyzerReader {
     private final TreeMap<String, ArrayList<String>> textTreeMap = new TreeMap<>();
 
-    public String readFile(String filePath) throws Exception {
-        try(FileReader fileReader = new FileReader(filePath)) {
+    public String readFile(File file) throws Exception {
+        try(FileReader fileReader = new FileReader(file)) {
             return getDataFromFile(fileReader);
         }
     }

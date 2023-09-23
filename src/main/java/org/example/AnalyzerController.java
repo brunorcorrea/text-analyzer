@@ -1,20 +1,20 @@
 package org.example;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class AnalyzerController {
-    private final String[] files;
+    private final ArrayList<File> files;
     private final AnalyzerReader analyzerReader = new AnalyzerReader();
     private final AnalyzerWriter analyzerWriter = new AnalyzerWriter();
 
-    public AnalyzerController(String[] files) {
+    public AnalyzerController(ArrayList<File> files) {
         this.files = files;
     }
 
     public void generateOutput() throws Exception {
-        for (String arg : this.files) {
-            File file = new File(arg);
-            analyzerReader.processText(analyzerReader.formatText(analyzerReader.readFile(arg)));
+        for (File file : this.files) {
+            analyzerReader.processText(analyzerReader.formatText(analyzerReader.readFile(file)));
             analyzerWriter.writeToFile(analyzerWriter.formatTextToCSV(analyzerReader.getTextTreeMap()), file.getName());
         }
     }

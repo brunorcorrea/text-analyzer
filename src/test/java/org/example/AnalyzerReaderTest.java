@@ -19,13 +19,14 @@ public class AnalyzerReaderTest {
     public final AnalyzerWriter analyzerWriter = new AnalyzerWriter();
 
     @ParameterizedTest
-    @CsvSource(value = {"'C:\\Users\\corre\\IdeaProjects\\text-analyzer\\src\\test\\resources\\validation-files\\happy-birthday-input.txt', 'C:\\Users\\corre\\IdeaProjects\\text-analyzer\\src\\test\\resources\\validation-files\\happy-birthday-output.csv'"
-            , "'C:\\Users\\corre\\IdeaProjects\\text-analyzer\\src\\test\\resources\\validation-files\\luar-sertao-input.txt', 'C:\\Users\\corre\\IdeaProjects\\text-analyzer\\src\\test\\resources\\validation-files\\luar-sertao-output.csv'"
+    @CsvSource(value = {"'D:\\Bruno\\Documents\\GitHub\\text-analyzer\\validation-files\\happy-birthday-input.txt', 'D:\\Bruno\\Documents\\GitHub\\text-analyzer\\validation-files\\happy-birthday-output.csv'"
+            , "'validation-files\\luar-sertao-input.txt', 'validation-files\\luar-sertao-output.csv'"
     })
     public void givenValidText_thenReturnExpected(String filePath, String expectedOutputPath) throws Exception {
         String expectedOutput = readFile(expectedOutputPath);
 
-        String text = analyzerReader.readFile(filePath);
+        File file = new File(getFilePath(filePath));
+        String text = analyzerReader.readFile(file);
         analyzerReader.processText(analyzerReader.formatText(text));
         String response = analyzerWriter.formatTextToCSV(analyzerReader.getTextTreeMap());
 
@@ -43,8 +44,25 @@ public class AnalyzerReaderTest {
         assertEquals(expectedText, response);
     }
 
-    public String readFile(String filePath) throws Exception {
-        try(FileReader fileReader = new FileReader(filePath)) {
+    private String getFilePath(String fileName) {
+        if (fileName.matches("^[A-Za-z]:[\\\\/].*"))
+            return fileName;
+
+        String rootFolder = System.getProperty("user.dir");
+        if (fileName.startsWith("/"))
+            return rootFolder + fileName;
+        else if (fileName.startsWith("\\"))
+            return rootFolder + fileName;
+        else if (rootFolder.contains("/"))
+            return rootFolder + "/" + fileName;
+
+        return rootFolder + "\\" + fileName;
+    }
+
+    public String readFile(String fileName) throws Exception {
+        File file = new File(getFilePath(fileName));
+
+        try (FileReader fileReader = new FileReader(file)) {
             return getDataFromFile(fileReader);
         }
     }

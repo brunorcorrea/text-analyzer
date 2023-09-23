@@ -6,11 +6,12 @@ import java.io.File;
 
 public class AnalyzerStart {
     public static void main(String[] args) {
+        InputValidator inputValidator = new InputValidator();
 
         try {
-            InputValidator.validateInput(args);
+            inputValidator.validateInput(args);
 
-            AnalyzerController analyzerController = new AnalyzerController(args);
+            AnalyzerController analyzerController = new AnalyzerController(inputValidator.getValidFiles());
             analyzerController.generateOutput();
 
         } catch (InvalidInputSizeException e) {
