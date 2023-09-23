@@ -10,13 +10,9 @@ public class AnalyzerStart {
         try {
             InputValidator.validateInput(args);
 
-            for (String arg : args) {
-                AnalyzerReader analyzerReader = new AnalyzerReader(); //TODO move to controller
-                AnalyzerWriter analyzerWriter = new AnalyzerWriter(); //TODO move to controller
+            AnalyzerController analyzerController = new AnalyzerController(args);
+            analyzerController.generateOutput();
 
-                analyzerReader.processText(analyzerReader.formatText(analyzerReader.readFile(arg)));
-                analyzerWriter.writeToFile(analyzerWriter.formatTextToCSV(analyzerReader.getTextTreeMap()));
-            }
         } catch (InvalidInputSizeException e) {
             System.out.println(e.getMessage()); //TODO treat better
         } catch (Exception e) {
