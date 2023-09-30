@@ -9,17 +9,18 @@ import java.util.TreeMap;
 
 public class AnalyzerWriter {
 
-    public void writeToFile(String text, String fileName) {
-        File file = new File(fileName.replace(".txt", ".csv"));
+    public void writeToFile(String text, File inputFile) {
+        String fileName = inputFile.getName();
+        File outputFile = new File(fileName.replace(".txt", ".csv"));
 
-        try(FileWriter fileWriter = new FileWriter(file)) {
+        try(FileWriter fileWriter = new FileWriter(outputFile)) {
             fileWriter.write(text);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public String formatTextToCSV(TreeMap<String, ArrayList<String>> text) {
+    public String formatTreeMapToCSV(TreeMap<String, ArrayList<String>> text) {
         StringBuilder formattedText = new StringBuilder();
         String textSeparator = ", ";
 

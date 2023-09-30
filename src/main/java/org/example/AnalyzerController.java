@@ -14,8 +14,18 @@ public class AnalyzerController {
 
     public void generateOutput() throws Exception {
         for (File file : this.files) {
-            analyzerReader.processText(analyzerReader.formatText(analyzerReader.readFile(file)));
-            analyzerWriter.writeToFile(analyzerWriter.formatTextToCSV(analyzerReader.getTextTreeMap()), file.getName());
+            analyzerReader.processText(filterTextInvalidTokens(file));
+            analyzerWriter.writeToFile(getCSVFormattedText(), file);
         }
+    }
+
+    private String filterTextInvalidTokens(File file) throws Exception {
+        String text = analyzerReader.readFile(file);
+        return analyzerReader.formatText(text);
+    }
+
+    private String getCSVFormattedText() {
+        var textTreeMap = analyzerReader.getTextTreeMap();
+        return analyzerWriter.formatTreeMapToCSV(textTreeMap);
     }
 }

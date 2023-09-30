@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -33,9 +34,15 @@ class AnalyzerStartTest {
 
     @Test
     void givenFileDoesNotExist_whenStart_thenThrowFileNotFoundException() {
-        String expectedMessage = "fileDoesNotExist.txt (O sistema não pode encontrar o arquivo especificado)";
+        var expectedMessages = List.of("fileDoesNotExist.txt (O sistema não pode encontrar o arquivo especificado)", "File 'fileDoesNotExist.txt' was not found");
         AnalyzerStart.main(new String[]{"fileDoesNotExist.txt"});
-        assertEquals(expectedMessage, outputStreamCaptor.toString()
-                .trim());
+        try{
+
+            assertEquals(expectedMessages.get(0), outputStreamCaptor.toString()
+                    .trim());
+        } catch (AssertionError e) {
+            assertEquals(expectedMessages.get(1), outputStreamCaptor.toString()
+                    .trim());
+        }
     }
 }

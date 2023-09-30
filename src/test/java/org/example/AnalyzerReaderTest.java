@@ -8,7 +8,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.TreeMap;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,7 +27,7 @@ public class AnalyzerReaderTest {
         File file = new File(getFilePath(filePath));
         String text = analyzerReader.readFile(file);
         analyzerReader.processText(analyzerReader.formatText(text));
-        String response = analyzerWriter.formatTextToCSV(analyzerReader.getTextTreeMap());
+        String response = analyzerWriter.formatTreeMapToCSV(analyzerReader.getTextTreeMap());
 
 
         assertProcessedTextIsEqualToExpected(response, expectedOutput);

@@ -18,12 +18,14 @@ public class AnalyzerReader {
 
     public String getDataFromFile(FileReader fileReader) throws IOException {
         StringBuilder resultStringBuilder = new StringBuilder();
+
         try (var br = new BufferedReader(fileReader)) {
             String line;
             while ((line = br.readLine()) != null) {
                 resultStringBuilder.append(line).append(" ");
             }
         }
+
         return resultStringBuilder.toString();
     }
 
