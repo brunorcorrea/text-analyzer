@@ -10,19 +10,23 @@ import java.util.ArrayList;
 public class InputValidator {
     private final ArrayList<File> validFiles = new ArrayList<>();
 
-    public void validateInput(String[] args) throws InvalidInputSizeException, FileNotFoundException, EmptyFileException, ProvidedFileIsDirectoryException, InvalidFileExtensionException, CannotReadFileException {
+    public void validateInput(String[] args) throws InvalidInputSizeException {
         checkInputParametersSize(args);
 
         for (String arg : args) {
-            var file = new File(getFilePath(arg));
+            try {
+                var file = new File(getFilePath(arg));
 
-            checkFileExistence(file);
-            checkIfIsFile(file);
-            checkFileReadability(file);
-            checkFileLength(file);
-            checkFileExtension(file);
+                checkFileExistence(file);
+                checkIfIsFile(file);
+                checkFileReadability(file);
+                checkFileLength(file);
+                checkFileExtension(file);
 
-            validFiles.add(file);
+                validFiles.add(file);
+            } catch (Exception e) {
+                System.out.println("An error occurred while trying to read the file '" + arg + "': \"" + e.getMessage() + "\"");
+            }
         }
     }
 
@@ -31,7 +35,7 @@ public class InputValidator {
     }
 
     private String getFilePath(String fileName) {
-        if (fileName.matches("^[A-Za-z]:[\\\\/].*"))
+        if (fileName.matches("^[A-Za-z]:[\\\\/].*")) // verifies if file starts like C:\ or C:/
             return fileName;
 
         String rootFolder = System.getProperty("user.dir");
@@ -51,23 +55,23 @@ public class InputValidator {
 
     private void checkFileExtension(File file) throws InvalidFileExtensionException {
         if (!file.getName().endsWith(".txt"))
-            throw new InvalidFileExtensionException("File '" + file.getName() + "' is not a .txt file");
+            throw new InvalidFileExtensionException("File '" + file.getName() + "' is not a .txt file!");
     }
 
     private void checkFileLength(File file) throws EmptyFileException {
-        if (file.length() == 0) throw new EmptyFileException("File '" + file.getName() + "' is empty");
+        if (file.length() == 0) throw new EmptyFileException("File '" + file.getName() + "' is empty!");
     }
 
     private void checkFileReadability(File file) throws CannotReadFileException {
-        if (!file.canRead()) throw new CannotReadFileException("File '" + file.getName() + "' cannot be read");
+        if (!file.canRead()) throw new CannotReadFileException("File '" + file.getName() + "' cannot be read!");
     }
 
     private void checkIfIsFile(File file) throws ProvidedFileIsDirectoryException {
-        if (!file.isFile()) throw new ProvidedFileIsDirectoryException("'" + file.getName() + "' is not a file");
+        if (!file.isFile()) throw new ProvidedFileIsDirectoryException("'" + file.getName() + "' is not a file!");
     }
 
     private void checkFileExistence(File file) throws FileNotFoundException {
-        if (!file.exists()) throw new FileNotFoundException("File '" + file.getName() + "' was not found");
+        if (!file.exists()) throw new FileNotFoundException("File '" + file.getName() + "' was not found!");
     }
 
     private boolean isInputSizeValid(int argsQtd) {
