@@ -26,7 +26,7 @@ public class AnalyzerReaderTest {
 
         File file = new File(getFilePath(filePath));
         String text = analyzerReader.readFile(file);
-        analyzerReader.processText(analyzerReader.formatText(text));
+        analyzerReader.processText(analyzerReader.filterTextInvalidTokens(text));
         String response = analyzerWriter.formatTreeMapToCSV(analyzerReader.getTextTreeMap());
 
 

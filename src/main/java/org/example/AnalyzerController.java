@@ -12,16 +12,16 @@ public class AnalyzerController {
         this.files = files;
     }
 
-    public void generateOutput() throws Exception {
+    public void generateOutput() {
         for (File file : this.files) {
-            analyzerReader.processText(filterTextInvalidTokens(file));
+            String text = analyzerReader.readFile(file);
+            if(text == null) continue;
+
+            String filteredText = analyzerReader.filterTextInvalidTokens(text);
+            analyzerReader.processText(filteredText);
+
             analyzerWriter.writeToFile(getCSVFormattedText(), file);
         }
-    }
-
-    private String filterTextInvalidTokens(File file) throws Exception {
-        String text = analyzerReader.readFile(file);
-        return analyzerReader.formatText(text);
     }
 
     private String getCSVFormattedText() {

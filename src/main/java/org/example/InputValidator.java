@@ -25,7 +25,7 @@ public class InputValidator {
 
                 validFiles.add(file);
             } catch (Exception e) {
-                System.out.println("An error occurred while trying to read the file '" + arg + "': \"" + e.getMessage() + "\"");
+                System.out.println("An error occurred while validating the file '" + arg + "': \"" + e.getMessage() + "\"");
             }
         }
     }

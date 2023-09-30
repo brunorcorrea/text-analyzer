@@ -16,7 +16,7 @@ public class AnalyzerWriter {
         try(FileWriter fileWriter = new FileWriter(outputFile)) {
             fileWriter.write(text);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while trying to write the file '" + outputFile.getName() + "': \"" + e.getMessage() + "\"");
         }
     }
 

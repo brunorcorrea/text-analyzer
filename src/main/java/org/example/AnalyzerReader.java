@@ -10,10 +10,14 @@ import java.util.TreeMap;
 public class AnalyzerReader {
     private final TreeMap<String, ArrayList<String>> textTreeMap = new TreeMap<>();
 
-    public String readFile(File file) throws Exception {
+    public String readFile(File file) {
         try (FileReader fileReader = new FileReader(file)) {
             return getDataFromFile(fileReader);
+        } catch (Exception e) {
+            System.out.println("An error occurred while trying to read the file '" + file.getName() + "': \"" + e.getMessage() + "\"");
         }
+
+        return null;
     }
 
     public String getDataFromFile(FileReader fileReader) throws IOException {
@@ -37,7 +41,8 @@ public class AnalyzerReader {
         return text.toLowerCase();
     }
 
-    public String formatText(String text) {
+    public String filterTextInvalidTokens(String text) {
+        if (text == null) return null;
         String lowerCaseText = formatLowerCase(text);
         return filterLettersAndNumbers(lowerCaseText);
     }
