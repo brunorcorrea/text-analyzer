@@ -26,7 +26,8 @@ public class AnalyzerReader {
         try (var br = new BufferedReader(fileReader)) {
             String line;
             while ((line = br.readLine()) != null) {
-                resultStringBuilder.append(line).append(" ");
+                line = line.trim();
+                if (!line.equals("")) resultStringBuilder.append(line).append(" ");
             }
         }
 
@@ -68,5 +69,9 @@ public class AnalyzerReader {
 
     public TreeMap<String, ArrayList<String>> getTextTreeMap() {
         return textTreeMap;
+    }
+
+    public void clearData() {
+        textTreeMap.clear();
     }
 }

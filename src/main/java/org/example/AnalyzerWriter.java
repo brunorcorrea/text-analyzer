@@ -9,11 +9,10 @@ import java.util.TreeMap;
 
 public class AnalyzerWriter {
 
-    public void writeToFile(String text, File inputFile) {
-        String fileName = inputFile.getName();
-        File outputFile = new File(fileName.replace(".txt", ".csv"));
+    public void writeToFile(String text, String fileName) {
+        var outputFile = new File(fileName);
 
-        try(FileWriter fileWriter = new FileWriter(outputFile)) {
+        try (FileWriter fileWriter = new FileWriter(outputFile)) {
             fileWriter.write(text);
         } catch (IOException e) {
             System.out.println("An error occurred while trying to write the file '" + outputFile.getName() + "': \"" + e.getMessage() + "\"");
@@ -24,12 +23,12 @@ public class AnalyzerWriter {
         StringBuilder formattedText = new StringBuilder();
         String textSeparator = ", ";
 
-        for (Entry<String, ArrayList<String>> entry : text.entrySet()) { //TODO percorre o mapa
+        for (Entry<String, ArrayList<String>> entry : text.entrySet()) { // for each word in the map
             formattedText.append(entry.getKey());
 
-            for (String value : entry.getValue()) {
+            for (String value : entry.getValue()) { // for each word in the adjacency list
                 formattedText.append(textSeparator).append(value);
-            } //TODO preenche a linha
+            }
 
             formattedText.append("\n");
         }
